@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>數位性暴力／性剝削防治工具</title>
+  <meta name="description" content="免費的數位性暴力與性剝削防治宣導、實務輔助工具入口。由社工張博鈞個人製作，供機關、學校與民間單位使用。">
+  <style>
+    :root {
+      --bg: #f4f0e9;
+      --paper: #fffcf7;
+      --ink: #2b2a28;
+      --muted: #6b675f;
+      --line: #e4ded3;
+      --accent: #2c6a66;
+      --accent-dark: #1d4b48;
+      --accent-soft: #e7f1f0;
+      --warn: #8a5a12;
+      --warn-bg: #faf0dc;
+      --shadow: 0 1px 2px rgba(43, 42, 40, .04), 0 8px 24px rgba(43, 42, 40, .06);
+      --sans: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", "Heiti TC", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent-dark); }
+    .wrap {
+      width: min(1040px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+    header {
+      padding: 56px 0 28px;
+    }
+    .kicker {
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: .08em;
+      color: var(--accent-dark);
+      font-weight: 600;
+      margin: 0 0 14px;
+    }
+    h1 {
+      font-size: clamp(26px, 4.2vw, 40px);
+      line-height: 1.28;
+      font-weight: 700;
+      letter-spacing: .01em;
+      margin: 0 0 16px;
+      text-wrap: balance;
+    }
+    .lede {
+      margin: 0;
+      max-width: 44em;
+      color: var(--muted);
+      font-size: 17px;
+      text-wrap: pretty;
+    }
+    .nowrap { white-space: nowrap; }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 8px 0 28px;
+    }
+    .toolbar span {
+      font-size: 14px;
+      color: var(--muted);
+      align-self: center;
+      margin-right: 4px;
+    }
+    .chip {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      font: inherit;
+      font-size: 14px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      line-height: 1.2;
+    }
+    .chip:hover { border-color: #cfc8bb; }
+    .chip[aria-pressed="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .chip:focus-visible, .open:focus-visible, a:focus-visible {
+      outline: 3px solid rgba(44, 106, 102, .45);
+      outline-offset: 2px;
+    }
+    .group { margin-bottom: 36px; }
+    .group[hidden], .card[hidden] { display: none; }
+    .group h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      margin: 0 0 14px;
+      letter-spacing: .04em;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 740px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 22px 22px 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+    .card h3 {
+      font-size: 22px;
+      line-height: 1.3;
+      margin: 0 0 10px;
+      font-weight: 700;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 12px;
+    }
+    .tag {
+      font-size: 12px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .purpose {
+      margin: 0 0 12px;
+      font-size: 16px;
+      color: var(--ink);
+    }
+    .note {
+      margin: 0 0 16px;
+      font-size: 13px;
+      color: var(--warn);
+      background: var(--warn-bg);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .card .open {
+      margin-top: auto;
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      min-height: 44px;
+      min-width: 96px;
+    }
+    .card .open:hover { background: var(--accent-dark); }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 20px;
+      padding: 32px 0 48px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .foot {
+      display: grid;
+      gap: 24px;
+    }
+    @media (min-width: 740px) {
+      .foot {
+        grid-template-columns: 1fr 132px;
+        align-items: start;
+        gap: 40px;
+      }
+    }
+    footer p { margin: 0 0 10px; }
+    footer p:last-child { margin-bottom: 0; }
+    .legal {
+      color: var(--ink);
+      font-size: 14px;
+    }
+    .qr {
+      text-align: center;
+    }
+    .qr img {
+      width: 132px;
+      height: 132px;
+      background: #fff;
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      display: block;
+      margin: 0 auto 8px;
+    }
+    .qr figcaption {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    @media (max-width: 739px) {
+      .wrap { width: min(1040px, calc(100% - 32px)); }
+      header { padding-top: 36px; }
+      h1 { font-size: 28px; }
+      .lede { font-size: 16px; }
+      .chip { font-size: 13px; padding: 7px 12px; }
+      .toolbar { gap: 6px; padding-bottom: 22px; }
+      .qr { justify-self: start; }
+      .qr img { margin-left: 0; }
+    }
+    @media print {
+      body { background: #fff; }
+      .toolbar { display: none; }
+      .card { box-shadow: none; break-inside: avoid; }
+      .card .open { color: var(--accent-dark); background: transparent; border: 1px solid var(--line); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <p class="kicker">stop-dsv-tw</p>
+      <h1><span class="nowrap">數位性暴力／</span><wbr><span class="nowrap">性剝削防治工具</span></h1>
+      <p class="lede">這是一組免費的宣導與實務輔助工具，由社工張博鈞個人製作，供機關、學校與<span class="nowrap">民間單位</span>使用。<br>目前有 5 項工具，可依對象選用。</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="toolbar" role="group" aria-label="依對象篩選">
+        <span>查看</span>
+        <button type="button" class="chip" data-filter="all" aria-pressed="true">全部</button>
+        <button type="button" class="chip" data-filter="students" aria-pressed="false">學生教材</button>
+        <button type="button" class="chip" data-filter="parents" aria-pressed="false">家長</button>
+        <button type="button" class="chip" data-filter="workers" aria-pressed="false">實務工作者</button>
+      </div>
+
+      <section class="group" data-group="students">
+        <h2>給學生的互動教材</h2>
+        <div class="grid">
+          <article class="card" data-group="students">
+            <h3>看穿這一局</h3>
+            <div class="tags">
+              <span class="tag">國小高年級</span>
+              <span class="tag">國中</span>
+            </div>
+            <p class="purpose">網路交友與性影像誘騙防制互動教材。</p>
+            <p class="note">用於個案或國小學童時，請由受過訓練的專業人員全程陪同，不要讓孩子單獨使用。</p>
+            <a class="open" href="https://stop-dsv-tw.github.io/see-the-hook/?src=portal" target="_blank" rel="noopener">開啟</a>
+          </article>
+
+          <article class="card" data-group="students">
+            <h3>說不，也可以</h3>
+            <div class="tags">
+              <span class="tag">國中</span>
+              <span class="tag">高中／高職</span>
+            </div>
+            <p class="purpose">親密關係與數位性影像界線互動教材。</p>
+            <p class="note">用於個案時，請由受過訓練的專業人員全程陪同，不要讓個案單獨使用。</p>
+            <a class="open" href="https://stop-dsv-tw.github.io/boundaries/?src=portal" target="_blank" rel="noopener">開啟</a>
+          </article>
+
+          <article class="card" data-group="students">
+            <h3>別衝動</h3>
+            <div class="tags">
+              <span class="tag">國中小</span>
+              <span class="tag">高中／高職男生</span>
+            </div>
+            <p class="purpose">視訊交友詐財與性勒索防制互動教材（男性向）。</p>
+            <p class="note">用於個案時，請由受過訓練的專業人員全程陪同，不要讓個案單獨使用。</p>
+            <a class="open" href="https://stop-dsv-tw.github.io/pause-first/?src=portal" target="_blank" rel="noopener">開啟</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="group" data-group="parents">
+        <h2>給家長</h2>
+        <div class="grid">
+          <article class="card" data-group="parents">
+            <h3>先接住，再處理</h3>
+            <div class="tags">
+              <span class="tag">未滿 18 歲兒少的家長或主要照顧者</span>
+            </div>
+            <p class="purpose">孩子的性影像被散布、被拿來威脅時，給家長看的行動指引。</p>
+            <a class="open" href="https://stop-dsv-tw.github.io/parent-next-step/?src=portal" target="_blank" rel="noopener">開啟</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="group" data-group="workers">
+        <h2>給實務工作者</h2>
+        <div class="grid">
+          <article class="card" data-group="workers">
+            <h3>性剝削 24 小時引導評估</h3>
+            <div class="tags">
+              <span class="tag">第一線社工</span>
+            </div>
+            <p class="purpose">兒少性剝削案件 24 小時必要安置評估的現場判別輔助工具。</p>
+            <a class="open" href="https://stop-dsv-tw.github.io/24HR/?src=portal" target="_blank" rel="noopener">開啟</a>
+          </article>
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>
+        <p class="legal">© 2026 張博鈞 · CC BY-NC 4.0 ｜ 本工具為個人製作，不代表任何機關立場。</p>
+        <p>歡迎機關、學校與民間單位免費使用與轉介。授權條款：<a href="https://creativecommons.org/licenses/by-nc/4.0/deed.zh-Hant">CC BY-NC 4.0</a>。</p>
+        <p>本網站使用 GoatCounter 進行匿名流量統計，不使用 cookie、不蒐集可識別個人的資料。</p>
+      </div>
+      <figure class="qr">
+        <img src="qrcode.png" width="132" height="132" alt="入口頁 QR code，掃描後開啟 https://stop-dsv-tw.github.io/">
+        <figcaption>掃碼開啟本入口</figcaption>
+      </figure>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll(".chip[data-filter]");
+      var groups = document.querySelectorAll(".group[data-group]");
+      buttons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var filter = btn.getAttribute("data-filter");
+          buttons.forEach(function (b) {
+            b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+          });
+          groups.forEach(function (section) {
+            var show = filter === "all" || section.getAttribute("data-group") === filter;
+            section.hidden = !show;
+          });
+        });
+      });
+    })();
+  </script>
+  <script data-goatcounter="https://stop-dsv-tw.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
