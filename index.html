@@ -92,7 +92,7 @@
       border-color: var(--accent);
       color: #fff;
     }
-    .chip:focus-visible, .open:focus-visible, a:focus-visible {
+    .chip:focus-visible, .open:focus-visible, a:focus-visible, button:focus-visible {
       outline: 3px solid rgba(44, 106, 102, .45);
       outline-offset: 2px;
     }
@@ -173,6 +173,142 @@
       min-width: 96px;
     }
     .card .open:hover { background: var(--accent-dark); }
+    .actions {
+      margin-top: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: stretch;
+    }
+    .actions .open {
+      margin-top: 0;
+      align-self: auto;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+    }
+    .card .open-secondary {
+      background: transparent;
+      color: var(--accent-dark);
+      border: 1px solid var(--accent);
+    }
+    .card .open-secondary:hover {
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+    }
+    .qr figcaption a {
+      display: inline-block;
+      margin-top: 6px;
+      color: var(--accent-dark);
+      white-space: nowrap;
+    }
+    .qr-dialog {
+      border: none;
+      padding: 0;
+      background: transparent;
+      max-width: none;
+      max-height: none;
+    }
+    .qr-dialog[open] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 100dvh;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+      padding: 12px;
+    }
+    .qr-dialog::backdrop {
+      background: rgba(30, 32, 30, .72);
+    }
+    .qr-dialog-panel {
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 16px;
+      width: min(420px, calc(100vw - 24px));
+      max-height: calc(100dvh - 24px);
+      margin: auto;
+      padding: 16px 16px 14px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, .28);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .qr-dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .qr-dialog-head h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .qr-dialog-close {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      font-size: 24px;
+      line-height: 1;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .qr-dialog-close:hover { background: var(--accent-soft); }
+    .qr-dialog-panel img {
+      width: 100%;
+      height: auto;
+      max-height: calc(100dvh - 200px);
+      object-fit: contain;
+      background: #24524c;
+      border-radius: 8px;
+      display: block;
+    }
+    .qr-dialog-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .qr-dialog-actions a,
+    .qr-dialog-actions button {
+      appearance: none;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 8px;
+      min-height: 44px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+    .qr-dialog-actions .ghost {
+      background: transparent;
+      color: var(--accent-dark);
+    }
+    .qr-dialog-actions a:hover,
+    .qr-dialog-actions button:hover { background: var(--accent-dark); color: #fff; }
+    .qr-dialog-actions .ghost:hover { background: var(--accent-soft); color: var(--accent-dark); }
+    @media (max-width: 739px) {
+      .qr-dialog-panel {
+        width: calc(100vw - 16px);
+        max-height: calc(100dvh - 16px);
+        border-radius: 12px;
+        padding: 12px;
+      }
+      .qr-dialog-panel img { max-height: calc(100dvh - 170px); }
+    }
     footer {
       border-top: 1px solid var(--line);
       margin-top: 20px;
@@ -186,7 +322,7 @@
     }
     @media (min-width: 740px) {
       .foot {
-        grid-template-columns: 1fr 132px;
+        grid-template-columns: 1fr auto;
         align-items: start;
         gap: 40px;
       }
@@ -298,7 +434,10 @@
               <span class="tag">未滿 18 歲兒少的家長或主要照顧者</span>
             </div>
             <p class="purpose">孩子的性影像被散布、被拿來威脅時，給家長看的行動指引。</p>
-            <a class="open" href="https://stop-dsv-tw.github.io/parent-next-step/?src=portal" target="_blank" rel="noopener">開啟</a>
+            <div class="actions">
+              <a class="open" href="https://stop-dsv-tw.github.io/parent-next-step/?src=portal" target="_blank" rel="noopener">開啟</a>
+              <button type="button" class="open open-secondary" id="parent-qr-open" aria-haspopup="dialog" aria-controls="parent-qr-dialog">給家長掃 QR</button>
+            </div>
           </article>
         </div>
       </section>
@@ -329,10 +468,29 @@
       </div>
       <figure class="qr">
         <img src="qrcode.png" width="132" height="132" alt="入口頁 QR code，掃描後開啟 https://stop-dsv-tw.github.io/">
-        <figcaption>掃碼開啟本入口</figcaption>
+        <figcaption>
+          掃碼開啟本入口<br>
+          <a href="portal-qr-phone.png" download="portal-qr-phone.png">下載手機版圖</a>
+        </figcaption>
       </figure>
     </div>
   </footer>
+
+  <dialog id="parent-qr-dialog" class="qr-dialog" aria-labelledby="parent-qr-title">
+    <div class="qr-dialog-panel">
+      <div class="qr-dialog-head">
+        <h2 id="parent-qr-title">給家長掃 QR</h2>
+        <button type="button" class="qr-dialog-close" id="parent-qr-close" aria-label="關閉">×</button>
+      </div>
+      <img src="parent-qr.png" width="1080" height="1920" alt="先接住，再處理的直式 QR 圖，掃描後開啟家長行動指引 https://stop-dsv-tw.github.io/parent-next-step/">
+      <div class="qr-dialog-actions">
+        <a href="parent-qr.png" download="parent-qr.png">下載圖片</a>
+        <button type="button" class="ghost" id="parent-qr-copy" data-copy="https://stop-dsv-tw.github.io/parent-next-step/">複製連結</button>
+        <button type="button" class="ghost" id="parent-qr-close-btn">關閉</button>
+      </div>
+    </div>
+  </dialog>
+
 
   <script>
     (function () {
@@ -349,6 +507,49 @@
             section.hidden = !show;
           });
         });
+      });
+
+      var dialog = document.getElementById("parent-qr-dialog");
+      var openBtn = document.getElementById("parent-qr-open");
+      var copyBtn = document.getElementById("parent-qr-copy");
+      if (!dialog || !openBtn) return;
+
+      function openDialog() {
+        if (typeof dialog.showModal === "function") dialog.showModal();
+        else dialog.setAttribute("open", "");
+        document.getElementById("parent-qr-close").focus();
+      }
+      function closeDialog() {
+        if (typeof dialog.close === "function") dialog.close();
+        else dialog.removeAttribute("open");
+        openBtn.focus();
+      }
+
+      openBtn.addEventListener("click", openDialog);
+      document.getElementById("parent-qr-close").addEventListener("click", closeDialog);
+      document.getElementById("parent-qr-close-btn").addEventListener("click", closeDialog);
+      dialog.addEventListener("click", function (e) {
+        if (e.target === dialog) closeDialog();
+      });
+      dialog.addEventListener("cancel", function (e) {
+        e.preventDefault();
+        closeDialog();
+      });
+
+      copyBtn.addEventListener("click", function () {
+        var url = copyBtn.getAttribute("data-copy");
+        var done = function () {
+          var prev = copyBtn.textContent;
+          copyBtn.textContent = "已複製";
+          setTimeout(function () { copyBtn.textContent = prev; }, 1600);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(done).catch(function () {
+            window.prompt("複製這個連結", url);
+          });
+        } else {
+          window.prompt("複製這個連結", url);
+        }
       });
     })();
   </script>
